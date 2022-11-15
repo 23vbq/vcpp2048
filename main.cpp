@@ -16,6 +16,7 @@ short tab[4][4] = {0};
 int score = 0;
 
 bool moveHandler(char input);
+bool moveField(int i, int j, short direction);
 bool isAvalible();
 int indexOfLatest(short direction);
 void spawnNew();
@@ -30,8 +31,10 @@ int main() {
     // tab[2][0] = 4;
     while (input != 3) {
         if (!isAvalible()) break;
+        system("cls");
         moveHandler(input);
         spawnNew();
+        printf("Score: %i\n", score);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if(tab[i][j] != 0) printf("|%4i|", tab[i][j]);
@@ -44,7 +47,6 @@ int main() {
             input = getch();
         } while (!(input == 3 || input < 0));
         if (input < 0) input = getch();
-        system("cls");
     }
     if (!isAvalible()) printf("\nPrzegrales\n");
     return 0;
@@ -62,15 +64,7 @@ bool moveHandler(char input) {
         for(int p = 0; p < index; p++) {
             for (int i = 1; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    if (tab[i - 1][j] == tab[i][j]) {
-                        tab[i - 1][j] *= 2;
-                        tab[i][j] = 0;
-                    } else if (tab[i - 1][j] == 0) {
-                        tab[i - 1][j] = tab[i][j];
-                        tab[i][j] = 0;
-                    } else {
-                        continue;
-                    }
+                    moveField(i, j, 0);
                 }
             }
         }
@@ -82,15 +76,7 @@ bool moveHandler(char input) {
         for(int p = 0; p < index; p++) {
             for (int j = 1; j < 4; j++) {
                 for (int i = 0; i < 4; i++) {
-                    if (tab[i][j - 1] == tab[i][j]) {
-                        tab[i][j - 1] *= 2;
-                        tab[i][j] = 0;
-                    } else if (tab[i][j - 1] == 0) {
-                        tab[i][j - 1] = tab[i][j];
-                        tab[i][j] = 0;
-                    } else {
-                        continue;
-                    }
+                    moveField(i, j, 1);
                 }
             }
         }
@@ -102,15 +88,7 @@ bool moveHandler(char input) {
         for(int p = 0; p < index; p++) {
             for (int j = 2; j >= 0; j--) {
                 for (int i = 0; i < 4; i++) {
-                    if (tab[i][j + 1] == tab[i][j]) {
-                        tab[i][j + 1] *= 2;
-                        tab[i][j] = 0;
-                    } else if (tab[i][j + 1] == 0) {
-                        tab[i][j + 1] = tab[i][j];
-                        tab[i][j] = 0;
-                    } else {
-                        continue;
-                    }
+                    moveField(i, j, 2);
                 }
             }
         }
@@ -122,23 +100,31 @@ bool moveHandler(char input) {
         for(int p = 0; p < index; p++) {
             for (int i = 2; i >= 0; i--) {
                 for (int j = 0; j < 4; j++) {
-                    if (tab[i + 1][j] == tab[i][j]) {
-                        tab[i + 1][j] *= 2;
-                        tab[i][j] = 0;
-                    } else if (tab[i + 1][j] == 0) {
-                        tab[i + 1][j] = tab[i][j];
-                        tab[i][j] = 0;
-                    } else {
-                        continue;
-                    }
+                    moveField(i, j, 3);
                 }
             }
         }
         return true;
     }
-
     // Nie ruszo klockiem
     return false;
+}
+bool moveField(int i, int j, short direction){
+    /*int x = (direction == 0 || direction == 3 ? i : j);
+    int y = (direction == 0 || direction == 3 ? j : i);*/
+    int x = i;
+    int y = j;
+    int px = x - (direction == 0 ? 1 : (direction == 3 ? -1 : 0));
+    int py = y - (direction == 1 ? 1 : (direction == 2 ? -1 : 0));
+    if (tab[px][py] == tab[x][y]) {
+        tab[px][py] *= 2;
+        tab[x][y] = 0;
+        addScore(tab[px][py]);
+    } else if (tab[px][py] == 0) {
+        tab[px][py] = tab[x][y];
+        tab[x][y] = 0;
+    } else return false;
+    return true;
 }
 bool isAvalible() {
     for (int i = 0; i < 4; i++) {
