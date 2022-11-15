@@ -23,13 +23,16 @@ int main() {
     srand(time(NULL));
     char input;
     system("cls");
+    tab[2][2] = 2;
+    tab[2][1] = 2;
+    tab[2][0] = 4;
     while (input != 3) {
         if (!isAvalible()) break;
         moveHandler(input);
-        spawnNew();
+        //spawnNew();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                printf("|%i|", tab[i][j]);
+                printf("|%4i|", tab[i][j]);
             }
             printf("\n");
         }
@@ -48,7 +51,7 @@ bool moveHandler(char input) {
     // Up
     if (input == 72) {
         int index = indexOfLatest(0);
-        while (index != 0) {
+        for(int p = 0; p < index; p++) {
             for (int i = 1; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
                     if (tab[i - 1][j] == tab[i][j]) {
@@ -62,14 +65,13 @@ bool moveHandler(char input) {
                     }
                 }
             }
-            index--;
         }
         return true;
     }
     // Left
     if (input == 75) {
         int index = indexOfLatest(1);
-        while (index != 0) {
+        for(int p = 0; p < index; p++) {
             for (int j = 1; j < 4; j++) {
                 for (int i = 0; i < 4; i++) {
                     if (tab[i][j - 1] == tab[i][j]) {
@@ -83,14 +85,13 @@ bool moveHandler(char input) {
                     }
                 }
             }
-            index--;
         }
         return true;
     }
     // Right
     if (input == 77) {
         int index = indexOfLatest(2);
-        while (index != 0) {
+        for(int p = 0; p < index; p++) {
             for (int j = 2; j >= 0; j--) {
                 for (int i = 0; i < 4; i++) {
                     if (tab[i][j + 1] == tab[i][j]) {
@@ -104,14 +105,13 @@ bool moveHandler(char input) {
                     }
                 }
             }
-            index--;
         }
         return true;
     }
     // Down
     if (input == 80) {
         int index = indexOfLatest(3);
-        while (index != 0) {
+        for(int p = 0; p < index; p++) {
             for (int i = 2; i >= 0; i--) {
                 for (int j = 0; j < 4; j++) {
                     if (tab[i + 1][j] == tab[i][j]) {
@@ -125,7 +125,6 @@ bool moveHandler(char input) {
                     }
                 }
             }
-            index--;
         }
         return true;
     }
@@ -149,7 +148,7 @@ int indexOfLatest(short direction) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (tab[i][j] != 0) {
-                    index = i + 1;
+                    index = i;
                     break;
                 }
             }
@@ -160,7 +159,7 @@ int indexOfLatest(short direction) {
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
                 if (tab[i][j] != 0) {
-                    index = i + 2;
+                    index = j;
                     break;
                 }
             }
@@ -171,7 +170,7 @@ int indexOfLatest(short direction) {
         for (int j = 3; j >= 0; j--) {
             for (int i = 0; i < 4; i++) {
                 if (tab[i][j] != 0) {
-                    index = 4 - i;
+                    index = 3 - j;
                     break;
                 }
             }
@@ -182,12 +181,13 @@ int indexOfLatest(short direction) {
         for (int i = 3; i >= 0; i--) {
             for (int j = 0; j < 4; j++) {
                 if (tab[i][j] != 0) {
-                    index = 4 - i;
+                    index = 3 - i;
                     break;
                 }
             }
         }
     }
+    cout<<index<<endl;
     return index;
 }
 void spawnNew() {
