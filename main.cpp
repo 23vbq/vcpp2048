@@ -13,26 +13,29 @@ using namespace std;
  * -32 80	- Down		- 3
  */
 short tab[4][4] = {0};
+int score = 0;
 
 bool moveHandler(char input);
 bool isAvalible();
 int indexOfLatest(short direction);
 void spawnNew();
+void addScore(short add);
 
 int main() {
     srand(time(NULL));
     char input;
     system("cls");
-    tab[2][2] = 2;
-    tab[2][1] = 2;
-    tab[2][0] = 4;
+    // tab[2][2] = 2;
+    // tab[2][1] = 2;
+    // tab[2][0] = 4;
     while (input != 3) {
         if (!isAvalible()) break;
         moveHandler(input);
-        //spawnNew();
+        spawnNew();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                printf("|%4i|", tab[i][j]);
+                if(tab[i][j] != 0) printf("|%4i|", tab[i][j]);
+                else printf("|%4c|", ' ');
             }
             printf("\n");
         }
@@ -47,6 +50,11 @@ int main() {
     return 0;
 }
 
+/*
+ * Handle input for move
+ *
+ * @return true if correct input
+ */
 bool moveHandler(char input) {
     // Up
     if (input == 72) {
@@ -187,8 +195,10 @@ int indexOfLatest(short direction) {
             }
         }
     }
-    cout<<index<<endl;
     return index;
+}
+void addScore(short add){
+    score += add;
 }
 void spawnNew() {
     int x, y;
