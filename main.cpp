@@ -15,8 +15,11 @@ using namespace std;
 short tab[4][4] = {0};
 int score = 0;
 
+HANDLE hConsole;
 const char *colors[] = {"[93m"};
 
+void printField(int field);
+int fieldLog(int field);
 bool moveHandler(char input);
 bool moveField(int i, int j, short direction);
 bool isAvalible();
@@ -25,6 +28,7 @@ void spawnNew();
 void addScore(short add);
 
 int main() {
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	srand(time(NULL));
 	char input;
 	system("cls");
@@ -56,6 +60,14 @@ int main() {
 	return 0;
 }
 
+void printField(int field){
+	if(field != 0){
+		printf("|");
+		int color = 7;
+		SetConsoleTextAttribute(hConsole, color);
+		printf(""); // TODO DOKOŃCZ
+	} else printf("|%4c|", ' ');
+}
 /*
  * Handle input for move
  *
