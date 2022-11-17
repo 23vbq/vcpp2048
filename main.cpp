@@ -16,10 +16,10 @@ short tab[4][4] = {0};
 int score = 0;
 
 HANDLE hConsole;
-const char *colors[] = {"[93m"};
+const int colors[] = {112, 128, 63, 47, 31, 95, 111, 207, 223, 79};
 
-void printField(int field);
-int fieldLog(int field);
+void printField(short field);
+uint16_t fieldLog(short field);
 bool moveHandler(char input);
 bool moveField(int i, int j, short direction);
 bool isAvalible();
@@ -43,8 +43,7 @@ int main() {
 		printf("Score: %i\n", score);
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				if (tab[i][j] != 0) printf("|%4i|", tab[i][j]);
-				else printf("|%4c|", ' ');
+				printField(tab[i][j]);
 			}
 			printf("\n");
 		}
@@ -60,13 +59,27 @@ int main() {
 	return 0;
 }
 
-void printField(int field){
-	if(field != 0){
+void printField(short field) {
+	if (field != 0) {
 		printf("|");
-		int color = 7;
+		uint16_t log = fieldLog(field) - 1;
+		int color;
+		if (log < sizeof(colors) / sizeof(int)) color = colors[log];
+		else color = 7;
 		SetConsoleTextAttribute(hConsole, color);
-		printf(""); // TODO DOKOŃCZ
+		printf("%4i", field);
+		SetConsoleTextAttribute(hConsole, 7);
+		printf("|");
 	} else printf("|%4c|", ' ');
+}
+uint16_t fieldLog(short field) {
+	if (field == 0) throw new exception(out_of_range("fieldLog can't handle 0"));
+	uint16_t logValue = -1;
+	while (field) {
+		logValue++;
+		field >>= 1;
+	}
+	return logValue;
 }
 /*
  * Handle input for move
