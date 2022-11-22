@@ -149,6 +149,7 @@ bool moveField(int i, int j, short direction) {
 		tab[px][py] *= 2;
 		tab[x][y] = 0;
 		addScore(tab[px][py]);
+		// if (tab[px][py] != 0) Beep(1200, 200);
 	} else if (tab[px][py] == 0) {
 		tab[px][py] = tab[x][y];
 		tab[x][y] = 0;
