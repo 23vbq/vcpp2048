@@ -145,10 +145,12 @@ bool moveField(int i, int j, short direction) {
 	int y = j;
 	int px = x - (direction == 0 ? 1 : (direction == 3 ? -1 : 0));
 	int py = y - (direction == 1 ? 1 : (direction == 2 ? -1 : 0));
-	if (tab[px][py] == tab[x][y]) {
+	bool onebreak = false; // FIXME not works
+	if (!onebreak && tab[px][py] == tab[x][y]) {
 		tab[px][py] *= 2;
 		tab[x][y] = 0;
 		addScore(tab[px][py]);
+		onebreak = true;
 		// if (tab[px][py] != 0) Beep(1200, 200);
 	} else if (tab[px][py] == 0) {
 		tab[px][py] = tab[x][y];
